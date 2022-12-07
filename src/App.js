@@ -1,27 +1,69 @@
-import './App.css';
+import "./App.css";
+
+import "./App.css";
+import { useEffect, useState } from "react";
+
+const MousePosition = ({ render }) => {
+  const [mousePosition, setMousePosition] = useState({
+    x: 0,
+    y: 0,
+  });
+
+  useEffect(() => {
+    const handleMousePositionChange = (e) => {
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMousePositionChange);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMousePositionChange);
+    };
+  }, []);
+
+  // What should be returned here?
+  return render({ mousePosition });
+};
+
+// This component should not receive any props
+const PanelMouseLogger = () => {
+  return (
+    <div className="BasicTracker">
+      <p>Mouse position:</p>
+      <MousePosition
+        render={({ mousePosition }) => (
+          <div className="Row">
+            <span>x: {mousePosition.x}</span>
+            <span>y: {mousePosition.y}</span>
+          </div>
+        )}
+      />
+    </div>
+  );
+};
+
+// This component should not receive any props
+const PointMouseLogger = () => {
+  return (
+    <MousePosition
+      render={({ mousePosition }) => (
+        <p>
+          ({mousePosition.x}, {mousePosition.y})
+        </p>
+      )}
+    />
+  );
+};
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+      <header className="Header">Higher Component Example</header>
+      <PanelMouseLogger />
+      <PointMouseLogger />
     </div>
   );
 }
