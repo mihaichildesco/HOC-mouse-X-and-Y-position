@@ -37,6 +37,7 @@ const PanelMouseLogger = () => {
         render={({ mousePosition }) => (
           <div className="Row">
             <span>x: {mousePosition.x}</span>
+            <br />
             <span>y: {mousePosition.y}</span>
           </div>
         )}
